@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Ethics & Morality - Study Flashcards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f3ff 0%, #f0f9ff 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: #1f2937;
+        }
+
+        .flashcard-container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .study-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #7F77DD 0%, #1D9E75 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .study-subtitle {
+            font-size: 15px;
+            color: #6b7280;
+            letter-spacing: 0.3px;
+            font-weight: 400;
+        }
+
+        .deck-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 2.5rem;
+        }
+
+        .deck-btn {
+            padding: 12px 14px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4b5563;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .deck-btn:hover {
+            border-color: #7F77DD;
+            background: #EEEDFE;
+            color: #7F77DD;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(127, 119, 221, 0.15);
+        }
+
+        .deck-btn.active {
+            border-color: #7F77DD;
+            background: linear-gradient(135deg, #7F77DD 0%, #6B68C8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(127, 119, 221, 0.3);
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 0 1px;
+        }
+
+        .progress-info {
+            font-size: 13px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        .progress-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: #7F77DD;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .progress-bar-wrapper {
+            flex: 1;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #7F77DD 0%, #1D9E75 100%);
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .card-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 2.5rem;
+        }
+
+        .flashcard {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2.5rem;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        .flashcard:hover {
+            border-color: #7F77DD;
+            box-shadow: 0 12px 24px rgba(127, 119, 221, 0.15), 0 1px 3px rgba(0, 0, 0, 0.06);
+            transform: translateY(-4px);
+        }
+
+        .card-badge {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .card-badge.question {
+            background: #7F77DD;
+        }
+
+        .card-badge.answer {
+            background: #1D9E75;
+        }
+
+        .card-label {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-question {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            line-height: 1.5;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+
+        .card-answer {
+            font-size: 15px;
+            color: #374151;
+            line-height: 1.7;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard.flipped .card-question {
+            display: none;
+        }
+
+        .flashcard.flipped .card-answer {
+            display: block;
+        }
+
+        .card-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+            font-size: 12px;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flip-hint {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .flashcard:hover .flip-hint {
+            opacity: 1;
+        }
+
+        .flip-icon {
+            font-size: 14px;
+            animation: flipRotate 2s linear infinite;
+        }
+
+        @keyframes flipRotate {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: white;
+            border: 1.5px solid #e5e7eb;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4b5563;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn:hover {
+            background: #EEEDFE;
+            border-color: #7F77DD;
+            color: #7F77DD;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(127, 119, 221, 0.15);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #7F77DD 0%, #6B68C8 100%);
+            border-color: #7F77DD;
+            color: white;
+            box-shadow: 0 4px 12px rgba(127, 119, 221, 0.3);
+        }
+
+        .btn.primary:hover {
+            background: linear-gradient(135deg, #6B68C8 0%, #5D60B8 100%);
+            border-color: #6B68C8;
+            color: white;
+            box-shadow: 0 6px 16px rgba(127, 119, 221, 0.4);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #7F77DD;
+            box-shadow: 0 4px 12px rgba(127, 119, 221, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7F77DD 0%, #1D9E75 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #EEEDFE 0%, #E1F5EE 100%);
+            border: 1px solid #CECBF6;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 2rem;
+            font-size: 13px;
+            color: #1f2937;
+            box-shadow: 0 2px 4px rgba(127, 119, 221, 0.1);
+        }
+
+        .tips-section-title {
+            font-weight: 600;
+            color: #3C3489;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-section ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .tips-section li {
+            margin: 6px 0;
+            line-height: 1.6;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips-section li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #7F77DD;
+            font-weight: 600;
+        }
+
+        @media (max-width: 640px) {
+            .study-title {
+                font-size: 24px;
+            }
+
+            .flashcard {
+                padding: 1.5rem;
+                min-height: 280px;
+            }
+
+            .card-question {
+                font-size: 18px;
+            }
+
+            .card-answer {
+                font-size: 14px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flashcard-container">
+        <div class="header-section">
+            <div class="study-title">Ethics & Morality Review</div>
+            <div class="study-subtitle">Perfect length for oral exams</div>
+        </div>
+
+        <div class="tips-section">
+            <div class="tips-section-title">
+                <i class="fas fa-lightbulb"></i>
+                Study Tips
+            </div>
+            <ul>
+                <li>2-3 sentences = solid answer at oral exam</li>
+                <li>Easy to memorize and recall</li>
+                <li>Practice saying aloud before exam</li>
+            </ul>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-info">Progress</div>
+            <div class="progress-bar-wrapper">
+                <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-number"><span id="current">1</span>/<span id="total">10</span></div>
+        </div>
+
+        <div class="deck-selector" id="deckSelector"></div>
+
+        <div class="card-wrapper">
+            <div class="flashcard" id="flashcard" onclick="toggleFlip()">
+                <div>
+                    <div>
+                        <div class="card-badge question" id="cardBadge"></div>
+                        <div class="card-label" id="cardLabel">Question</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-question" id="cardQuestion">Select a deck to begin</div>
+                        <div class="card-answer" id="cardAnswer"></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <span class="flip-hint">
+                        <span class="flip-icon"><i class="fas fa-redo"></i></span>
+                        <span id="flipText">Click to reveal</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="previousCard()"><i class="fas fa-arrow-left"></i> Previous</button>
+            <button class="btn primary" onclick="shuffle()"><i class="fas fa-random"></i> Shuffle</button>
+            <button class="btn" onclick="nextCard()">Next <i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="masteredCount">0</div>
+                <div class="stat-label">Mastered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="reviewCount">0</div>
+                <div class="stat-label">Reviewing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="learningCount">0</div>
+                <div class="stat-label">Learning</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const decks = {
+            "Part 1: Ethics Fundamentals": [
+                { q: "What is the difference between ethics and morals?", a: "Ethics is the systematic study of morality—it's theoretical and asks universal questions about what is good. Morals are personal principles and values that individuals actually practice in their lives, rooted in culture or religion. The key distinction is that ethics is the study, while morality is the lived practice." },
+                { q: "Why should one act ethically?", a: "There are five main reasons: first, we have a biological imperative to survive and thrive. Second, ethics are required for good standing in society. Third, religious traditions obligate us to act ethically. Fourth, humans naturally pursue self-interest. And fifth, humans have an innate sense of right and wrong that drives us toward the moral life." },
+                { q: "What are the 5 core ethical principles?", a: "The principles are: Autonomy, which respects people's choices; Beneficence, which means doing good; Nonmaleficence, which means preventing harm; Justice, which distributes benefits fairly; and Veracity, which means telling the truth. These five principles, identified by Beauchamp and Childress, form the foundation of ethical thinking." },
+                { q: "Define moral standard and normative systems", a: "A moral standard is a code that tells us what is right and wrong—it's the foundation for ethical judgment. Normative systems are frameworks that guide behavior and tell us what we ought to do. The four main normative systems are: Etiquette (social rules), Law (enforceable rules), Religion (spiritual beliefs), and Ethics (universal principles)." },
+                { q: "What is moral relativism and why is it problematic?", a: "Moral relativism is the view that ethical standards are relative to individual beliefs or cultures, not universal. This is problematic because if all standards are relative, we can't condemn any action as truly wrong, which makes meaningful moral discourse impossible and creates ethical paralysis." },
+                { q: "What are the main challenges of ethics?", a: "Three major challenges exist: first, moral relativism—the idea that there are no universal standards. Second, cultural differences—diverse frameworks can clash, making it difficult when values conflict. Third, conflicting values—people often face situations where loyalty conflicts with honesty, or individual freedom conflicts with community welfare." },
+                { q: "Why should we care about ethics?", a: "Ethics matter because they foster trust and positive relationships, promote fairness and social harmony, help create a just society, encourage responsible decision-making, and provide frameworks to navigate complex moral dilemmas we encounter in life." }
+            ],
+            "Part 2: God & Morality": [
+                { q: "What does it mean that God is the starting point of morality?", a: "In Christian theology, moral theology properly begins with God and God's love. As Pope John Paul II said, moral life is our response to God's gratuitous initiatives out of love. This means God loves us first, and our moral life is our response to that divine initiative, not something we generate on our own." },
+                { q: "Why is morality without God incomplete in Christian ethics?", a: "Without God, morality loses its ultimate foundation and transcendent anchor, making it vulnerable to relativism. There is no ultimate telos or purpose—no beatitude (happiness in God)—so human life lacks ultimate meaning. Additionally, without God as the model, we lose the Trinity as a pattern for all relationships and moral life becomes separated from our spiritual life." },
+                { q: "How does our image of God influence our moral decisions?", a: "Since moral life is fundamentally a response to God, our image of God directly shapes how we respond morally. If we see God as a harsh judge, our morality becomes fear-driven and legalistic. If we see God as a loving Father, our morality becomes a joyful response to love. Our perception of God essentially determines the character of our moral life." },
+                { q: "What does the Prodigal Father image teach?", a: "The Prodigal Father shows us that God's love is unconditional—it doesn't depend on our behavior or our works. The father's unconditional embrace teaches us that we should love freely, not as a transaction or business arrangement. Moral life is fundamentally a response of gratitude, not a debt we're trying to pay back." },
+                { q: "What does the Good Shepherd image teach?", a: "The Good Shepherd image reveals that God does not desire anyone to be lost to sin and actively and persistently seeks out sinners with compassion. This teaches us that we should never give up on ourselves or others, no matter how lost they seem, because no one is beyond God's reach and repentance is always possible." },
+                { q: "What does the Suffering God image teach?", a: "The image of the Suffering God on the cross shows that God's love is so profound it was willing to suffer for us. The cross represents ultimate self-giving love, and God's response to our sin is forgiveness rather than punishment. This teaches us that authentic moral love requires sacrifice and that when we doubt God's love, we can look to the cross." },
+                { q: "Explain 5 distorted images of God", a: "First is God as distant or only for myself—leading to separation of spiritual from ethical life. Second is God as strict lawgiver—creating checklist morality focused on external obedience rather than character growth. Third is God as judge—producing fear-driven ethics based on punishment and reward. Fourth is God who tests faith—leading to passive acceptance of evil. Fifth is God who controls everything—creating moral passivity and fatalism." }
+            ],
+            "Part 3: Sources of Morality": [
+                { q: "Why must Scripture have authority on Christian moral life?", a: "Scripture is God's revealed Word and reveals the moral values that God promulgates for humanity. More importantly, Scripture reveals Christ, whom we are called to imitate, and the life and teachings of Jesus constitute what the Church calls the moral rule for Christian living. Scripture isn't just advice—it's God's authoritative guidance for how to live." },
+                { q: "What are the 4 critical approaches to Scripture in moral theology?", a: "First is the exegetical task—understanding what the text originally meant in its historical context. Second is the hermeneutical task—determining what it means for us today. Third is the methodological task—learning how to use Scripture for moral reflection. Fourth is the theological task—integrating Scripture with Natural Law, human experience, Church Tradition, and the Magisterium." },
+                { q: "Why is Natural Law considered universal?", a: "Natural Law is considered universal because it's written in human nature itself and is accessible to all people through reason, regardless of their religion or culture. Since all humans share the same basic nature and capacity for reason, and since Natural Law reflects God's eternal wisdom, it applies the same way across all times and places." },
+                { q: "What are the 3 human inclinations grounding Natural Law?", a: "First is self-preservation, shared by all living beings, which makes killing fundamentally wrong. Second is reproduction and care for offspring, shared with animals, which makes violations of family and procreation integrity immoral. Third is reason and social harmony, unique to humans, which teaches that we're social beings and our choices affect others." },
+                { q: "How do Scripture and Natural Law relate?", a: "Scripture and Natural Law are complementary, not contradictory, because they come from the same author—God. Scripture is revealed moral truth while Natural Law is moral truth discoverable through reason. For example, Scripture says 'You shall not kill' and Natural Law tells us through reason that self-preservation is fundamental, so killing violates it. Both paths lead to the same moral truth." },
+                { q: "What is the Magisterium and what does it do?", a: "The Magisterium is the Church's official teaching authority exercised by the Pope and Bishops in communion with him. It interprets Scripture and Tradition, defines the dogmas of faith, and provides moral guidance on contemporary issues—like bioethics, AI, and genetic engineering—by applying timeless principles to new situations." },
+                { q: "Why is the Magisterium important in moral life?", a: "The Magisterium is important because it ensures unity of faith within the Church and guards against misinterpretation of Scripture and Tradition. It also applies eternal moral principles to new moral situations that didn't exist in ancient times, helping Catholics navigate contemporary ethical challenges with authoritative guidance." }
+            ],
+            "Part 4: Human Freedom": [
+                { q: "What is true freedom according to Christian teaching?", a: "The Catechism defines freedom as the power rooted in reason and will to act or not act and to perform deliberate actions on one's own responsibility. True freedom requires two elements: voluntariness, meaning acting from one's own free will without coercion, and responsibility, meaning being accountable for the consequences of one's choices." },
+                { q: "What is 'freedom FROM'? Describe the 4 obstacles", a: "Freedom from means liberation from obstacles that prevent us from acting freely. Four types of obstacles include: interior obstacles like ignorance, disordered passions, and bad habits; exterior obstacles like violence and oppression; biological obstacles like physical defects or addiction; and psychological obstacles like trauma and unconscious compulsions. Overcoming these requires education, spiritual direction, justice, and healing." },
+                { q: "What is 'freedom FOR' and its 3 goals?", a: "Freedom for means directing our freedom toward positive goals—it's both a process and a lifelong task. We strive toward three goals: first, freedom itself by breaking free from addictions and compulsions; second, holiness by growing in virtue and imitating Christ; and third, fullness of life in Christ through abundant living and eternal communion with God." },
+                { q: "How does virtue increase freedom? Give an example", a: "Virtue increases freedom because when you consistently choose the good, you develop habits that make goodness easier and more natural, making you less tempted by evil. For example, someone who practices honesty repeatedly develops the virtue of truthfulness, and over time, telling the truth becomes so natural that they're free from the temptation to lie, even when lying would benefit them." },
+                { q: "Define Fundamental Option and Fundamental Choice", a: "The Fundamental Option is your overall life orientation toward or away from God—it's the deepest level of freedom and shapes the meaning of all your individual choices. Fundamental Choice, by contrast, is the freedom to choose specific acts in particular situations. Your repeated fundamental choices strengthen or weaken your fundamental option, creating a continuous dialogue between them." },
+                { q: "What are the 7 things that limit human freedom?", a: "Seven major limits include: ignorance, which reduces moral responsibility; strong passions and emotions, which cloud judgment; fear and duress, which constrain voluntary choice; bad habits or vice, which weaken the will; psychological disorders, which reduce conscious control; social and structural sin, which constrains individual options; and paradoxically, grace, which actually expands freedom by healing the wounded will." }
+            ],
+            "Part 5: The Human Person": [
+                { q: "What is the Christian understanding of the human person?", a: "The human person is made in God's image and is, as St. Francis de Sales said, an epitome of the world containing all its tensions and beauty. Christian morality holds that moral life is the call to become loving persons living in community with others before God, imitating the example of Jesus Christ." },
+                { q: "What is dualism and why does Christianity reject it?", a: "Dualism is the philosophical view that the human person consists of two opposing substances—a body (material and inferior) and a soul (spiritual and superior). Christianity rejects this because it degrades the body, creates a fractured self, leads to extremes in behavior, and contradicts the Christian affirmation that the body is sacred and good because God created it and became incarnate in it." },
+                { q: "What are 3 dogmas that challenge dualism?", a: "First is the Incarnation—God became a human body, directly affirming that the body is good and sacred. Second is the Resurrection of the Body—we don't shed our bodies at death but are raised bodily, proving bodies are part of our eternal identity. Third are the Sacraments—grace is communicated through material things like water, bread, wine, and touch, showing that matter is a vehicle of the spiritual." },
+                { q: "What is the Principle of Stewardship?", a: "Pope Pius XII taught that humans are not owners but users of their bodies—the body ultimately belongs to God and we are stewards of it. This means we must care for our bodies and treat them with respect, but we cannot do with them whatever we please because they don't ultimately belong to us." },
+                { q: "What is the Principle of Totality?", a: "The Principle of Totality states that individual body parts exist for the sake of the whole organism, so parts may be sacrificed when necessary for the good of the whole. This principle distinguishes between anatomical mutilation (removing an organ like a cancerous breast) and functional mutilation (suppressing function like sterilization), with the latter requiring stricter conditions." },
+                { q: "What are the 3 conditions for justified mutilation?", a: "First, there must be serious damage or a genuine threat to the organism from the organ's continued presence or function. Second, the mutilation must actually remedy or lessen this damage. Third, there must be proportionate reason—the positive effect of eliminating danger or easing pain must outweigh the negative effect of the loss or mutilation." },
+                { q: "What is the Principle of Double Effect?", a: "This principle, from St. Thomas Aquinas, explains when we can act knowing it will have both good and bad effects. Four conditions must be met: the act itself must be good or neutral; the good effect cannot come from the evil effect; the intention must be directed toward the good (not the evil); and there must be proportionate reason where the good outweighs the bad." },
+                { q: "What is the Principle of Integral Cause? Explain the 3 elements", a: "This principle states that for an act to be morally good, all essential elements must be good—if even one element is defective, the whole act is morally wrong. The three elements are: the object (what you do—some acts are intrinsically evil); the intention (why you do it—good intention cannot make an evil act good); and the circumstances (the context—which can increase or decrease morality but cannot reverse an intrinsically evil act)." }
+            ]
+        };
+
+        let currentDeck = null;
+        let currentCards = [];
+        let currentIndex = 0;
+        let isFlipped = false;
+
+        function loadDeck(deckName) {
+            currentDeck = deckName;
+            currentCards = JSON.parse(JSON.stringify(decks[deckName]));
+            currentIndex = 0;
+            isFlipped = false;
+            document.querySelectorAll('.deck-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayCard();
+        }
+
+        function displayCard() {
+            if (currentCards.length === 0) return;
+            const card = currentCards[currentIndex];
+            document.getElementById('cardQuestion').textContent = card.q;
+            document.getElementById('cardAnswer').textContent = card.a;
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.remove('flipped');
+            isFlipped = false;
+            document.getElementById('current').textContent = currentIndex + 1;
+            document.getElementById('total').textContent = currentCards.length;
+            document.getElementById('cardLabel').textContent = 'Question';
+            document.getElementById('flipText').textContent = 'Click to reveal';
+            document.getElementById('cardBadge').className = 'card-badge question';
+            updateProgressBar();
+        }
+
+        function toggleFlip() {
+            const flashcard = document.getElementById('flashcard');
+            isFlipped = !isFlipped;
+            flashcard.classList.toggle('flipped');
+            document.getElementById('cardLabel').textContent = isFlipped ? 'Answer' : 'Question';
+            document.getElementById('cardBadge').className = isFlipped ? 'card-badge answer' : 'card-badge question';
+            document.getElementById('flipText').textContent = isFlipped ? 'Click to question' : 'Click to reveal';
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % currentCards.length;
+            displayCard();
+        }
+
+        function previousCard() {
+            currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
+            displayCard();
+        }
+
+        function shuffle() {
+            for (let i = currentCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
+            }
+            currentIndex = 0;
+            isFlipped = false;
+            displayCard();
+        }
+
+        function updateProgressBar() {
+            const progress = currentCards.length > 0 ? ((currentIndex + 1) / currentCards.length) * 100 : 0;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Initialize decks
+        const selector = document.getElementById('deckSelector');
+        Object.keys(decks).forEach(deckName => {
+            const btn = document.createElement('button');
+            btn.className = 'deck-btn';
+            btn.textContent = deckName;
+            btn.onclick = () => loadDeck(deckName);
+            selector.appendChild(btn);
+        });
+
+        const firstDeck = Object.keys(decks)[0];
+        loadDeck(firstDeck);
+        document.querySelector('.deck-btn').classList.add('active');
+    </script>
+</body>
+</html>
